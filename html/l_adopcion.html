@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Adopcion</title>
+    <link rel="stylesheet" type="text/css" href="../css/l_adopcion.css">
+</head>
+<body>
+    <div>
+    <button type="button" id="btn-index">
+        <span style="font-size: 1.5em; font-weight: bold"> Pantalla de inicio</span>
+     </button> 
+    <h1>Lista de Adopcion</h1>
+    </div>
+
+
+    <div id="tableView">
+        <table id="adoptionTable">
+    <tr>
+        <th>Fecha de publicacion</th>
+        <th>Fecha entrega</th>
+        <th>Comuna</th>
+        <th>Sector</th>
+        <th>Cantidad Tipo Edad</th>
+        <th>Nombre Contacto</th>
+        <th>Total Fotos</th>
+    </tr>
+    <tr data-id="1">
+        <td>2025-08-30 12:00</td>
+        <td>2025-09-05 15:00</td>
+        <td>Santiago</td>
+        <td>Beauchef 850, terraza</td>
+        <td>1 gato, 2 meses </td>
+        <td>María González</td>
+        <td>2</td>
+    </tr>
+    <tr data-id="2">
+        <td>2025-08-23 19:00</td>
+        <td>2025-08-30 12:00</td>
+        <td>Ñuñoa</td>
+        <td>Estadio Nacional</td>
+        <td>1 perro, 6 meses</td>
+        <td>Juan Pérez</td>
+        <td>2</td>
+    </tr>
+    <tr data-id="3">
+        <td>2025-08-20 09:00</td>
+        <td>2025-08-27 10:00</td>
+        <td>Providencia</td>
+        <td>Plaza</td>
+        <td>3 gatos, 3 meses</td>
+        <td>Ana Silva</td>
+        <td>2</td>
+    </tr>
+    <tr data-id="4">
+        <td>2025-08-18 14:00</td>
+        <td>2025-08-25 16:00</td>
+        <td>Santiago</td>
+        <td>Morande con Compañia</td>
+        <td>4 perros, 2 meses</td>
+        <td>Carlos López</td>
+        <td>2</td>
+    </tr>
+    <tr data-id="5">
+        <td>2025-08-15 17:00</td>
+        <td>2025-08-22 14:00</td>
+        <td>Santiago</td>
+        <td>Ministro Carvajar con Ministro Carvajal</td>
+        <td>1 perro, 1 mes  </td>
+        <td>Laura Martínez</td>
+        <td>2</td>
+    </tr>
+    </table>
+    </div>
+    <!-- Vista de detalles -->
+    <div id="detailView" class="detail-view">
+        <h2>Detalles de la Adopción</h2>
+        <div class="detail-item">
+            <span class="detail-label">Region:</span>
+            <span id="detail-region"></span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Comuna:</span>
+            <span id="detail-comuna"></span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Sector:</span>
+            <span id="detail-sector"></span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Nombre de contacto:</span>
+            <span id="detail-contacto"></span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Email de contacto:</span>
+            <span id="detail-email"></span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Teléfono de contacto:</span>
+            <span id="detail-telefono"></span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Tipo:</span>
+            <span id="detail-tipo"></span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Cantidad:</span>
+            <span id="detail-cantidad"></span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Edad:</span>
+            <span id="detail-edad"></span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Fecha de publicación:</span>
+            <span id="detail-fecha-publicacion"></span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Fecha de entrega:</span>
+            <span id="detail-fecha-entrega"></span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Descripción:</span>
+            <p id="detail-descripcion"></p>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Fotos:</span>
+            <div id="detail-fotos"></div>
+        </div>
+        <button id="backButton" class="back-button">Volver a la lista</button>
+    </div>
+    <!-- Modal para imagen ampliada -->
+    <div id="imageModal" class="modal">
+        <span class="close-button">&times;</span>
+        <img class="modal-content" id="expandedImg" alt="imagen" src="../media/l_adopcion/img.png">
+        <div id="imageCaption"></div>
+    </div>
+    <script lang="en" src="../js/l_adopcion.js"></script>
+</body>
+</html>
