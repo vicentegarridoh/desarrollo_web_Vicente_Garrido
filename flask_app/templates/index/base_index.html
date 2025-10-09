@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hogar de Adopcion Don Perro y Gato</title>
+    {% block css %}{% endblock %}
+</head>
+
+<body>
+    <h1> Pantalla de inicio</h1>
+    <h3>Bienvenido a la pagina de adopcion con mayor tasa de exito en latinoamerica unida</h3> 
+    
+    <button type="button" id="btn-aviso">
+        <span style="font-size: 1.5em; font-weight: bold"> Agregar aviso de adopcion</span>
+    </button> 
+    
+    <button type="button" id="btn-l_adopcion">
+        <span style="font-size: 1.5em; font-weight: bold"> Lista de adopcion</span>
+    </button> 
+    
+    <button type="button" id="btn-estadisticas">
+        <span style="font-size: 1.5em; font-weight: bold">Estadisticas</span>
+    </button>
+    <br>
+    <br>
+
+    {% block content %}{% endblock %} {% block javascript %}{% endblock %}
+    
+</body>
+</html>

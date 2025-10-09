@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estadisticas</title>
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='../static/css/estadisticas.css') }}"
+    />
+</head>
+<body>
+    <div>
+    <button type="button" id="btn-index">
+        <span style="font-size: 1.5em; font-weight: bold"> Pantalla de inicio</span>
+     </button> 
+    <h1> Estadisticas</h1>
+    </div>
+    <div class="graficos-container">
+        <img src="../media/estadisticas/grafico1.png" alt="">
+        <br>
+        <img src="../media/estadisticas/grafico2.png"  alt="">
+        <br>
+        <img src="../media/estadisticas/grafico3.png"  alt="">
+    </div>
+    <script lang="en" src="{{ url_for('static', filename='js/estadisticas.js') }}"></script>
+</body>
+</html>

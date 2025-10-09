@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aviso de adopcion</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/aviso.css">
+</head>
+<body>
+    <div>
+    <button type="button" id="btn-index">
+        <span style="font-size: 1.5em; font-weight: bold"> Pantalla de inicio</span>
+     </button> 
+    <h1>Agregar aviso de adopcion</h1>
+    </div>
+    <div class="main-container">
+        <div id="val-box" hidden>
+            <h2 id="val-msg">.</h2>
+            <ul id="val-list"></ul>
+        </div>
+    </div>
+
+    <form class="formulario" id="login-form" action="/agregar_form_aviso" method="POST" enctype="multipart/form-data">
+        <div class="donde">
+            <div id="region-input" class="grupo-input">
+                <label for="select-region">Región</label>
+                <select name="select-region" id="select-region" required>
+                    <option value="" label="-- Selecciona una opción --"> </option>
+                </select><br>
+            </div>
+            <div id="comuna-input" class="grupo-input">
+                <label for="select-comuna">Comuna</label>
+                <select name="select-comuna" id="select-comuna" required>
+                    <option value="" label="-- Selecciona una opción --"></option>
+                </select><br>
+            </div>
+            <div id="sector-input" class="grupo-input">
+                <label for="sector">Sector</label>
+                <input type="text" name="sector" id="sector" minlength="0" maxlength="100"><br>
+            </div>
+        </div>
+        <br>
+        <div class = "contacto">
+            <div id="nombre_c-input" class="grupo-input">
+                <label for="nombre_c">Nombre</label>
+                <input type="text" name="nombre_c" id="nombre_c" minlength="3" maxlength="200" required><br>
+            </div>
+            <div id= "correo_c-input" class = "grupo-input">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" minlength="3" maxlength="100" required><br>
+            </div>
+            <div id="numero_celular-input" class = "grupo-input">
+                <label for="numero_celular">Telefono</label>
+                <input type="tel" name="numero_celular" id="numero_celular"  required><br>
+            </div>
+            <div id="contactar_por-input" class = "container">
+                <label for="social-select">Contactar por:</label>
+                <select id="social-select" name="social-select">
+                    <option value="">-- Selecciona una opción --</option>
+                    <option value="whatsapp">WhatsApp</option>
+                    <option value="telegram">Telegram</option>
+                    <option value="x">X (Twitter)</option>
+                    <option value="instagram">Instagram</option>
+                    <option value="tiktok">TikTok</option>
+                    <option value="other">Otra red social</option>
+                </select>
+            </div>
+        </div>
+        <div id="contact-container" class="contact-container">
+        </div>
+        <br>
+        <div class = "Mascota">
+            <div id = "tipo_m-input" class = "grupo-input">
+                <label for="tipo_m">Tipo:</label>
+                <select id="tipo_m" name="tipo_m" required>
+                    <option value="" label="-- Selecciona una opción --"></option>
+                    <option value="opcion1">Perro</option>
+                    <option value="opcion2">Gato</option>
+                </select>
+            </div>
+            <div id = "cantidad_m-input" class = "grupo-input">
+                <label for="cantidad_m">Cantidad: </label>
+                <input type="number" name="cantidad_m" id="cantidad_m" min="1" required><br>
+            </div>
+            <div id = "edad_m-input" class = "grupo-input">
+                <label for="edad_m">Edad: </label>
+                <input type="number" name="edad_m" id="edad_m" min="1" required><br>
+            </div>
+            <div id = "un_edad-input" class = "grupo-input">
+                <label for="un_edad">Unidad de medida de edad :</label>
+                <select id="un_edad" name="un_edad" required>
+                    <option value="" label="-- Selecciona una opción --"></option>
+                    <option value="opcion1">Meses</option>
+                    <option value="opcion2">Años</option>
+                </select>
+            </div>
+            <div id = "fecha_entrega-input" class = "grupo-input">
+                <label for="fecha_entrega">Fecha de entrega: </label>
+                <input type="datetime-local" name="fecha_entrega" id="fecha_entrega" ><br>
+            </div>
+            <div id="descripcion_m-input" class="grupo-input">
+                <label for="descripcion_m">Descripcion: </label><br>
+                <textarea rows="10" cols="50" name="descripcion_m" id="descripcion_m"></textarea><br>
+            </div>
+            <div id="foto_m-input" class="grupo-input">
+                
+            <input type="hidden" id="total-files" name="total_files" value="1">
+                <!-- aqui se iran anadiendo los slots para las imagenes-->
+            </div>
+            <button id="addMoreButton" class="add-button">Añadir otro archivo</button>
+        </div>
+        <br>
+        <div>
+            <button id="submit-btn" type="button">“Agregar este aviso de adopción</button>
+        </div>
+    </form>
+     <script lang="en" src="../static/js/region_comuna.js"></script>
+     <script lang="en" src="../static/js/aviso.js"></script>
+     <script lang="en" src="../static/js/validacion.js"></script>
+</body>
+</html>
