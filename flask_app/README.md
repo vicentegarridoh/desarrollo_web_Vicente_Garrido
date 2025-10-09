@@ -6,3 +6,6 @@ Vicente Garrido Herrera.
 - el apartado de estadisticas no se tocaba en esta tarea, por lo que no se modifico, y al cambiar la distribucion de los archivos de flask, los js se descoordinarion, por lo que no funcionan en el apartado de estadisticas.
 - la manera de moverse en los archivos es por medio de /numero de pagina, el /1/0/ el 0 era para poder abrir aca uno de los avisos (variando de 1-5 con 0 el estado base), mecanica que no se logro implementar
 -se uso sqlalchemy para las base de datos
+- hubieron complicaciones al subir el venv, asi que existe la posibilidad que desde el git falle pero desde el zip funcione
+
+eso, saludos :)
