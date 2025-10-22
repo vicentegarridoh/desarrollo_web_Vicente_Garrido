@@ -1,0 +1,48 @@
+{% extends 'l_adopcion/base_l_adopcion.html' %}
+
+{% block css %}
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='../static/css/l_adopcion.css') }}"
+    />
+{% endblock %}
+
+{% block content %} 
+{%if data %}
+        <br>
+        <div id="tableView">
+            <table id="adoptionTable">
+            <tr data-id= "10">
+                <th>Fecha de publicacion</th>
+                <th>Fecha entrega</th>
+                <th>Comuna</th>
+                <th>Sector</th>
+                <th>Cantidad Tipo Edad</th>
+                <th>Nombre Contacto</th>
+                <th>Total Fotos</th>
+            </tr>
+        {% for i in data %}
+            {%if i != "args"  %}
+               <tr data-id= "{{ (data[i][0].id) }}">
+                <!--<tr data-id= "9" >-->
+                    <td>{{ data[i][0].Fecha_de_publicacion }}</td>
+                    <td>{{ data[i][0].Fecha_de_entrega }}</td>
+                    <td>{{ data[i][0].Comuna }}</td>
+                    <td>{{ data[i][0].Sector }}</td>
+                    <td>{{ data[i][0].Cantidad_Tipo_Edad }}</td>
+                    <td>{{ data[i][0].nombre}}</td>
+                    <td>{{ data[i][0].total_de_fotos }}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </table>
+        </div>
+    {% else %}
+    <h2>No existen datos en esta pagina</h2>
+{% endif %}
+    {% block vista %}
+    {% endblock %}
+{% endblock content %}
+{% block javascript %}
+    <script lang="en" src="{{ url_for('static', filename='js/l_adopcion.js') }}"></script>
+{% endblock %}

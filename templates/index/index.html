@@ -1,0 +1,46 @@
+{% extends 'index/base_index.html' %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}"/>
+    
+{% endblock %}
+
+{% block content %} 
+    {%if data %}
+        <h1> Ultimos 5 agregados</h1>
+        <br>
+        <table>
+            <tr>
+                <th>Fecha de publicacion</th>
+                <th>Comuna</th>
+                <th>Sector</th>
+                <th>Cantidad Tipo Edad</th>
+                <th>Foto</th>
+            </tr>
+        {% for i in data %}
+            <tr>
+                <td>{{ data[i][0].Fecha_de_publicacion }}</td>
+                <td>{{ data[i][0].Comuna }}</td>
+                <td>{{ data[i][0].Sector }}</td>
+                <td>{{ data[i][0].Cantidad_Tipo_Edad }}</td>
+                <td>
+                    {% if data[i][0].Foto %}
+                        <img src="{{ url_for('static', filename=data[i][0].Foto) }}" 
+                             alt="Foto" 
+                             style="max-width: 100px; max-height: 100px;">
+                    {% else %}
+                        Sin foto
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% else %}
+    <h2>Se el primero en publicar!!!!</h2>
+    {% endif %}
+    
+{% endblock content %}
+
+{% block javascript %}
+    <script lang="en" src="{{ url_for('static', filename='js/intex.js') }}"></script>
+{% endblock %}
