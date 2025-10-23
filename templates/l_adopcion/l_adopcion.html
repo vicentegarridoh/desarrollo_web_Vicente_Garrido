@@ -24,6 +24,7 @@
         {% for i in data %}
             {%if i != "args"  %}
                <tr data-id= "{{ (data[i][0].id) }}">
+
                 <!--<tr data-id= "9" >-->
                     <td>{{ data[i][0].Fecha_de_publicacion }}</td>
                     <td>{{ data[i][0].Fecha_de_entrega }}</td>
@@ -40,8 +41,37 @@
     {% else %}
     <h2>No existen datos en esta pagina</h2>
 {% endif %}
-    {% block vista %}
-    {% endblock %}
+
+{%if data %}
+{% for i in data %}
+        {%if i == "args"  %}
+            {%if data[i][0] == 1  %}
+                        <a href="{{ url_for('lista', arg= data[i][0]+1, arg2=0) }}" class="btn-nav btn-avanzar">
+                            <span class="btn-text">Avanzar</span>
+                            <span class="btn-icon">→</span>
+                        </a>
+            {% endif %}
+            {%if data[i][0] > 1  %}
+                        <a href="{{ url_for('lista', arg= 1, arg2=0) }}" class="btn-nav btn-inicio">
+                            <span class="btn-text">Inicio</span>
+                            <span class="btn-icon">⏮</span>
+                        </a>
+                        <a href="{{ url_for('lista', arg= data[i][0]-1, arg2=0) }}" class="btn-nav btn-retroceder">
+                            <span class="btn-text">Retroceder</span>
+                            <span class="btn-icon">←</span>
+                        </a>
+                        <a href="{{ url_for('lista', arg= data[i][0]+1, arg2=0) }}" class="btn-nav btn-avanzar">
+                            <span class="btn-text">Avanzar</span>
+                            <span class="btn-icon">→</span>
+                        </a>
+            {% endif %}
+
+
+        {% endif %}
+{% endfor %}
+{% endif %}
+
+    
 {% endblock content %}
 {% block javascript %}
     <script lang="en" src="{{ url_for('static', filename='js/l_adopcion.js') }}"></script>

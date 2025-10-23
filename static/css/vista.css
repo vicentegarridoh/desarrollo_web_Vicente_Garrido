@@ -1,0 +1,136 @@
+/* --- Estilos Generales --- */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #e8f5e9; /* Fondo verde claro */
+}
+
+
+.page-container {
+    width: 90%;
+    max-width: 900px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.2em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 1.5em;
+    color: #444;
+    text-align: left;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* --- Estilos de Botones --- */
+.btn {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #4CAF50; /* Verde */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #45a049;
+}
+
+.btn-inicio {
+    margin-bottom: 15px;
+}
+
+.btn-volver {
+    /* Centrar el botón "Volver" */
+    display: block;
+    width: fit-content;
+    margin: 30px auto 10px auto;
+}
+
+/* --- Caja Principal de Detalles --- */
+.detalles-box {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 25px 40px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    text-align: left;
+}
+
+/* --- Lista de Items (Label-Valor) --- */
+.detalle-item {
+    display: flex;
+    justify-content: space-between; /* Alinea label a la izq y valor a la der */
+    align-items: center;
+    padding: 16px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 0.95em;
+}
+
+/* El último item no necesita borde */
+.detalles-lista .detalle-item:last-child {
+    border-bottom: none;
+}
+
+.detalle-item .label {
+    font-weight: bold;
+    color: #555;
+}
+
+.detalle-item .valor {
+    color: #333;
+    text-align: right;
+}
+
+/* --- Secciones (Descripción y Fotos) --- */
+.detalle-seccion {
+    padding: 16px 10px;
+    border-top: 1px solid #f0f0f0;
+    margin-top: 20px;
+}
+
+.detalle-seccion .label {
+    font-weight: bold;
+    color: #555;
+    font-size: 1.1em;
+    display: block; /* Para que ocupe su propia línea */
+    margin-bottom: 10px;
+}
+
+.detalle-seccion p {
+    margin: 0;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* --- Contenedor de Fotos --- */
+.fotos-container {
+    display: flex;
+    flex-wrap: wrap; /* Para que se ajusten en móviles */
+    gap: 20px; /* Espacio entre fotos */
+    margin-top: 10px;
+}
+
+.fotos-container img {
+    width: 48%; /* Dos fotos por fila */
+    max-width: 300px;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
+    /* Para que las imágenes no queden distorsionadas */
+    object-fit: cover; 
+
+    /* Crecimiento flexible para que ocupen el espacio */
+    flex-grow: 1; 
+}

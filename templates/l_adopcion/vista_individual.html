@@ -1,107 +1,126 @@
-{% extends 'l_adopcion/l_adopcion.html' %}
+{% extends 'l_adopcion/base_l_adopcion.html' %}
 
-{% block vista %}
-    <!-- Vista de detalles -->
-    <div id="detailView" class="detail-view" style="display: none;">
+{% block css %}
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/vista.css') }}"
+    />
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/l_adopcion.css') }}"
+    />
+{% endblock %}
+
+{% block content %} 
+<div class="page-container">
+
+    <div class="detalles-box">
+        
         <h2>Detalles de la Adopción</h2>
-        <div class="detail-item">
-
-        {%if data %}
-        {% for i in data %}
-                {%if i != "args"  %}
-                    <span class="detail-label">{{ data[i][0].Fecha_de_publicacion }}</span>
-                {% endif %}
-        {% endfor %}
-        {% endif %}
-
+        
+        <div class="detalles-lista">
             
-            <span id="detail-region">holaaaaa</span>
-        </div>
-        <div class="detail-item">
-            <span class="detail-label">Comuna:</span>
-            <span id="detail-comuna"></span>
-        </div>
-        <div class="detail-item">
-            <span class="detail-label">Sector:</span>
-            <span id="detail-sector"></span>
-        </div>
-        <div class="detail-item">
-            <span class="detail-label">Nombre de contacto:</span>
-            <span id="detail-contacto"></span>
-        </div>
-        <div class="detail-item">
-            <span class="detail-label">Email de contacto:</span>
-            <span id="detail-email"></span>
-        </div>
-        <div class="detail-item">
-            <span class="detail-label">Teléfono de contacto:</span>
-            <span id="detail-telefono"></span>
-        </div>
-        <div class="detail-item">
-            <span class="detail-label">Tipo:</span>
-            <span id="detail-tipo"></span>
-        </div>
-        <div class="detail-item">
-            <span class="detail-label">Cantidad:</span>
-            <span id="detail-cantidad"></span>
-        </div>
-        <div class="detail-item">
-            <span class="detail-label">Edad:</span>
-            <span id="detail-edad"></span>
-        </div>
-        <div class="detail-item">
-            <span class="detail-label">Fecha de publicación:</span>
-            <span id="detail-fecha-publicacion"></span>
-        </div>
-        <div class="detail-item">
-            <span class="detail-label">Fecha de entrega:</span>
-            <span id="detail-fecha-entrega"></span>
-        </div>
-        <div class="detail-item">
-            <span class="detail-label">Descripción:</span>
-            <p id="detail-descripcion"></p>
-        </div>
-        <div class="detail-item">
-            <span class="detail-label">Fotos:</span>
-            <div id="detail-fotos"></div>
-        </div>
-        <button id="backButton" class="back-button">Volver a la lista</button>
-    </div>
-    <!-- Modal para imagen ampliada -->
-    <div id="imageModal" class="modal">
-        <span class="close-button">&times;</span>
-        <img class="modal-content" id="expandedImg" alt="imagen" src="../media/l_adopcion/img.png">
-        <div id="imageCaption"></div>
-    </div>
+            <div class="detalle-item">
+                <span class="label">Region:</span>
+                <span class="valor">{{data[0]["Region"]}}</span>
+            </div>
 
+            <div class="detalle-item">
+                <span class="label">Comuna:</span>
+                <span class="valor">{{data[0]["Comuna"]}}</span>
+            </div>
 
-<!-- Apartado de botones para moverse entre paginas -->
-{%if data %}
-{% for i in data %}
-        {%if i == "args"  %}
-            {%if data[i][0] == 1  %}
-                        <a href="{{ url_for('lista', arg= data[i][0]+1, arg2=0) }}" class="btn-nav btn-avanzar">
-                            <span class="btn-text">Avanzar</span>
-                            <span class="btn-icon">→</span>
-                        </a>
+            <div class="detalle-item">
+                <span class="label">Sector:</span>
+                <span class="valor">{{data[0]["Sector"]}}</span>
+            </div>
+
+            <div class="detalle-item">
+                <span class="label">Nombre de contacto:</span>
+                <span class="valor">{{data[0]["nombre"]}}</span>
+            </div>
+
+            <div class="detalle-item">
+                <span class="label">Email de contacto:</span>
+                <span class="valor">{{data[0]["correo"]}}</span>
+            </div>
+
+            <div class="detalle-item">
+                <span class="label">Teléfono de contacto:</span>
+                <span class="valor">{{data[0]["numero"]}}</span>
+            </div>
+
+            <div class="detalle-item">
+                <span class="label">Tipo:</span>
+                <span class="valor">{{data[0]["tipo"]}}</span>
+            </div>
+
+            <div class="detalle-item">
+                <span class="label">Cantidad:</span>
+                <span class="valor">{{data[0]["Cantidad"]}}</span>
+            </div>
+
+            <div class="detalle-item">
+                <span class="label">Edad:</span>
+                <span class="valor">{{data[0]["edad"]}}</span>
+            </div>
+
+            <div class="detalle-item">
+                <span class="label">Fecha de publicación:</span>
+                <span class="valor">{{data[0]["Fecha_de_publicacion"]}}</span>
+            </div>
+
+            <div class="detalle-item">
+                <span class="label">Fecha de entrega:</span>
+                <span class="valor">{{data[0]["Fecha_de_entrega"]}}</span>
+            </div>
+        </div>
+
+        <div class="detalle-seccion descripcion">
+            <span class="label">Descripción:</span>
+            <p>
+                {{data[0]["descripcion"]}}
+            </p>
+        </div>
+
+        <div class="detalle-seccion">
+            <span class="label">Fotos:</span>
+
+            {% if data[0].Foto %}
+                <img src="{{ url_for('static', filename=data[0].Foto) }}" 
+                        alt="Foto" 
+                        style="width: 320px; max-height: 240px;">
+            {% else %}
+            Sin foto
             {% endif %}
-            {%if data[i][0] > 1  %}
-                        <a href="{{ url_for('lista', arg= 1, arg2=0) }}" class="btn-nav btn-inicio">
-                            <span class="btn-text">Inicio</span>
-                            <span class="btn-icon">⏮</span>
-                        </a>
-                        <a href="{{ url_for('lista', arg= data[i][0]-1, arg2=0) }}" class="btn-nav btn-retroceder">
-                            <span class="btn-text">Retroceder</span>
-                            <span class="btn-icon">←</span>
-                        </a>
-                        <a href="{{ url_for('lista', arg= data[i][0]+1, arg2=0) }}" class="btn-nav btn-avanzar">
-                            <span class="btn-text">Avanzar</span>
-                            <span class="btn-icon">→</span>
-                        </a>
-            {% endif %}
+        </div>
 
+        <br>
+        <br>
+        <!--momento de agregar el formulario para subir datos-->
+        <h2>Agregar Comentario</h2>
+        <form class="formulario" id="comentario-form" action="/" method="POST" enctype="multipart/form-data">
+            <div class="agregar_comentario">
+                <div id="usuarioc_input" class="grupo-input">
+                    <label for="usuarioc">Usuario</label><br> 
+                    <input type="text" name="usuarioc" id="usuarioc" minlength="3" maxlength="80"><br>
+                </div>
+                <div id="comentario0_input" class="grupo-input">
+                    <label for="comentario0">Comentario: </label><br>
+                    <textarea rows="4" cols="50" name="comentario0" id="comentario0" required minlength="5" ></textarea><br>
+                </div>
+                <div>
+                    <button id="submit-btn-com" type="button">Agregar comentario</button>
+                </div>
+            </div>
+        </form>
 
-        {% endif %}
-{% endfor %}
-{% endif %}
+        <h2></h2>
+        
+        <a href="/l_adopcion/1/0" class="btn btn-volver">Volver a la lista</a>
+        
+    </div> </div> {% endblock content %}
+
+{% block javascript %}
+<script lang="en" src="{{ url_for('static', filename='js/l_adopcion.js') }}"></script>
 {% endblock %}

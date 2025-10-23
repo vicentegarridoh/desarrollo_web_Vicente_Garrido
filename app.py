@@ -1,10 +1,14 @@
-from flask import Flask, request, render_template, redirect, url_for, session
+from flask import Flask, request, render_template, redirect, url_for, session,jsonify
+from flask_cors import cross_origin
 from utils.validations import *
 from database import db
 from werkzeug.utils import secure_filename
 import hashlib
 import os
 from datetime import datetime
+import random
+import time
+from collections import Counter
 
 UPLOAD_FOLDER = 'static/uploads'
 
@@ -116,6 +120,45 @@ def aviso():
     return render_template("aviso/aviso.html")  
 
 
+
+@app.route("/vista/<int:arg>",  methods=["GET", "POST"])
+def vista(arg):
+    data = {}
+    for aviso in db.get_aviso(500):
+        if aviso.id == arg:
+            foto = db.get_1foto_by_id(aviso.id)
+            foto = foto.ruta_archivo
+            region = "Metropolitana"
+            comuna = db.get_comuna_by_id(aviso.comuna_id)
+            unidad = aviso.unidad_medida
+            if unidad == "m" and aviso.edad > 1:
+                unidad = "meses"
+            elif unidad == "m":
+                unidad = "mes"
+            elif unidad == "a" and aviso.edad > 1:
+                unidad = "años"
+            elif unidad == "a" :
+                unidad = "año"
+            else:
+                unidad = "error"
+            data={"Fecha_de_publicacion":str(aviso.fecha_ingreso),
+                    "Fecha_de_entrega":str(aviso.fecha_entrega),
+                    "Comuna":str(comuna.nombre),
+                    "Region":str(region),
+                    "Sector":str(aviso.sector),
+                    "Cantidad":str(aviso.cantidad),
+                    "tipo":str(aviso.tipo),
+                    "edad":str(aviso.edad) +" " +unidad,
+                    "nombre":str(aviso.nombre),
+                    "descripcion":str(aviso.descripcion),
+                    "correo":str(aviso.email),
+                    "numero":str(aviso.celular),
+                    "Foto":foto,
+                    "total_de_fotos":2,
+                    "id":aviso.id},
+    return render_template("l_adopcion/vista_individual.html",data = data)  
+
+
 @app.route("/l_adopcion/<int:arg>/<int:arg2>",  methods=["GET", "POST"])
 def lista(arg,arg2):
     if arg2 == 0:
@@ -136,7 +179,7 @@ def lista(arg,arg2):
                 unidad = "año"
             else:
                 unidad = "error"
-            data[i] ={"Fecha_de_publicacion":str(aviso.fecha_ingreso),
+            data[aviso.id] ={"Fecha_de_publicacion":str(aviso.fecha_ingreso),
                     "Fecha_de_entrega":str(aviso.fecha_entrega),
                     "Comuna":str(comuna.nombre),
                     "Sector":str(aviso.sector),
@@ -146,11 +189,163 @@ def lista(arg,arg2):
                     "id":aviso.id},
             i += 1
             foto = db.get_1foto_by_id(aviso.id)
-    return render_template("l_adopcion/vista_individual.html",data=data) 
+    return render_template("l_adopcion/l_adopcion.html",data=data) 
 
 @app.route("/estadisticas",  methods=["GET", "POST"])
 def estadisticas():
     return render_template("estadisticas/estadisticas.html") 
+
+
+@app.route("/get-stats-data", methods=["GET"])
+@cross_origin(origin="127.0.0.1", supports_credentials=True)
+def get_stats_data():
+    """
+    Genera datos estadísticos contando las publicaciones (avisos) por día,
+    basado en los datos reales de 'fecha_ingreso' de la base de datos.
+    """
+    
+    # 1. Usamos collections.Counter para agrupar y contar eficientemente.
+    #    Asumimos que 'aviso.fecha_ingreso' es un objeto datetime.
+    
+        # Usamos .date() para truncar la hora/minutos/segundos 
+        # y agrupar solo por día.
+        # Ajusta page_size según cuántos datos históricos quieras mostrar.
+        
+    date_list = [
+        aviso.fecha_ingreso.date() 
+        for aviso in db.get_aviso_ultimo(page_size=500) # Usamos 500 como ejemplo
+        if aviso.fecha_ingreso # Nos aseguramos que la fecha no sea None
+    ]
+    
+    # 2. Contamos las ocurrencias de cada fecha
+    # Esto crea un dict: {datetime.date(2025, 10, 8): 5, ...}
+    date_counts = Counter(date_list)
+    processed_data = [
+        {
+            "date": date_obj.strftime("%Y-%m-%d"), # Convertimos el objeto date a string
+            "count": count
+        } 
+        for date_obj, count in date_counts.items()
+    ]
+
+    # 4. Ordenamos por fecha (clave)
+    processed_data.sort(key=lambda x: x["date"])
+
+    return jsonify(processed_data)
+
+@app.route("/get-stats-data2", methods=["GET"])
+@cross_origin(origin="127.0.0.1", supports_credentials=True)
+def get_stats_data2():
+    """
+    Genera datos estadísticos para un gráfico de torta, contando
+    la cantidad total de 'perro' y 'gato' en los avisos.
+    """
+    
+    # 1. Obtenemos la lista de tipos de mascota.
+    # Asumo que 'db.get_aviso_ultimo()' es el método correcto
+    # para obtener los datos, basado en tu plantilla original.
+    # Ajusta page_size si es necesario.
+    type_list = [
+        aviso.tipo
+        for aviso in db.get_aviso_ultimo(page_size=500)
+        if aviso.tipo # Nos aseguramos que el tipo no sea None
+    ]
+    
+    # 2. Contamos las ocurrencias de cada tipo
+    # Esto crea un dict: {'perro': 70, 'gato': 30}
+    type_counts = Counter(type_list)
+    
+    # 3. Convertimos al formato que Highcharts espera para un gráfico de torta:
+    # [ { "name": "Perros", "y": 70 }, { "name": "Gatos", "y": 30 } ]
+    
+    processed_data = [
+        {
+            # Convertimos 'perro' -> 'Perro' para mostrarlo
+            "name": tipo.capitalize(), 
+            "y": count
+        }
+        for tipo, count in type_counts.items()
+    ]
+    
+    # 4. Ordenamos por cantidad (opcional, pero hace que el gráfico
+    # se vea más ordenado, de mayor a menor)
+    processed_data.sort(key=lambda x: x["y"], reverse=True)
+    print(processed_data)
+    return jsonify(processed_data)
+
+
+@app.route("/get-stats-data3", methods=["GET"])
+@cross_origin(origin="127.0.0.1", supports_credentials=True)
+def get_stats_data3():
+    """
+    Genera datos estadísticos para un gráfico de torta, contando
+    la cantidad total de 'perro' y 'gato' en los avisos.
+    """
+    
+    # 1. Obtenemos la lista de tipos de mascota.
+    # Asumo que 'db.get_aviso_ultimo()' es el método correcto
+    # para obtener los datos, basado en tu plantilla original.
+    # Ajusta page_size si es necesario.
+    dict = {}
+    i = 1
+    while i<13:
+        dict[202500+i] = {"perro":0,"gato":0}
+        i+=1
+    print("biennnn")
+
+
+    for aviso in db.get_aviso_ultimo(page_size=500):
+        tipo = aviso.tipo
+        year = aviso.fecha_ingreso.year
+        mes = aviso.fecha_ingreso.month
+        dia = aviso.fecha_ingreso.day
+        formato = year * 100 + mes
+        if formato not in dict:
+            dict[formato] = {"perro":0,"gato":0}
+        dict[formato][tipo] += 1
+    lista_perro = []
+    lista_gato = []
+    for elem in dict:
+        lista_perro.append(dict[elem]["perro"])
+    for elem in dict:
+        lista_gato.append(dict[elem]["gato"])
+    
+    lista = [lista_gato,lista_perro] 
+
+    return jsonify(lista)
+
+@app.route("/get-stats-data4", methods=["GET"])
+@cross_origin(origin="127.0.0.1", supports_credentials=True)
+def get_stats_data4():
+    data = {}
+    i = 1
+    for aviso in db.get_aviso_paginado(500):
+        comuna = db.get_comuna_by_id(aviso.comuna_id)
+        unidad = aviso.unidad_medida
+        if unidad == "m" and aviso.edad > 1:
+            unidad = "meses"
+        elif unidad == "m":
+            unidad = "mes"
+        elif unidad == "a" and aviso.edad > 1:
+            unidad = "años"
+        elif unidad == "a" :
+            unidad = "año"
+        else:
+            unidad = "error"
+        data[i] ={"Fecha_de_publicacion":str(aviso.fecha_ingreso),
+                "Fecha_de_entrega":str(aviso.fecha_entrega),
+                "Comuna":str(comuna.nombre),
+                "Sector":str(aviso.sector),
+                "Cantidad_Tipo_Edad":str(aviso.cantidad) + " " + str(aviso.tipo) + ", " + str(aviso.edad) +" " +unidad,
+                "nombre":str(aviso.nombre),
+                "total_de_fotos":2,
+                "id":aviso.id},
+        i += 1
+        foto = db.get_1foto_by_id(aviso.id)
+        print("extrasido")
+    return jsonify(data)
+
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

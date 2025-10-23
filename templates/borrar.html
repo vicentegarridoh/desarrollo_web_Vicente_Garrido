@@ -1,67 +1,95 @@
-<div id="tableView">
-        <table id="adoptionTable">
-            <thead>
-                <tr>
-                    <th>Fecha de publicacion</th>
-                    <th>Fecha entrega</th>
-                    <th>Comuna</th>
-                    <th>Sector</th>
-                    <th>Cantidad Tipo Edad</th>
-                    <th>Nombre Contacto</th>
-                    <th>Total Fotos</th>
-                    <th>Acciones</th> </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>2025-08-30 12:00</td>
-                    <td>2025-09-05 15:00</td>
-                    <td>Santiago</td>
-                    <td>Beauchef 850, terraza</td>
-                    <td>1 gato, 2 meses </td>
-                    <td>María González</td>
-                    <td>2</td>
-                    <td><button class="btn-detalles" data-id="1">Ver Detalles</button></td>
-                </tr>
-                <tr>
-                    <td>2025-08-23 19:00</td>
-                    <td>2025-08-30 12:00</td>
-                    <td>Ñuñoa</td>
-                    <td>Estadio Nacional</td>
-                    <td>1 perro, 6 meses</td>
-                    <td>Juan Pérez</td>
-                    <td>2</td>
-                    <td><button class="btn-detalles" data-id="2">Ver Detalles</button></td>
-                </tr>
-                <tr>
-                    <td>2025-08-20 09:00</td>
-                    <td>2025-08-27 10:00</td>
-                    <td>Providencia</td>
-                    <td>Plaza</td>
-                    <td>3 gatos, 3 meses</td>
-                    <td>Ana Silva</td>
-                    <td>2</td>
-                    <td><button class="btn-detalles" data-id="3">Ver Detalles</button></td>
-                </tr>
-                <tr>
-                    <td>2025-08-18 14:00</td>
-                    <td>2025-08-25 16:00</td>
-                    <td>Santiago</td>
-                    <td>Morande con Compañia</td>
-                    <td>4 perros, 2 meses</td>
-                    <td>Carlos López</td>
-                    <td>2</td>
-                    <td><button class="btn-detalles" data-id="4">Ver Detalles</button></td>
-                </tr>
-                <tr>
-                    <td>2025-08-15 17:00</td>
-                    <td>2025-08-22 14:00</td>
-                    <td>Santiago</td>
-                    <td>Ministro Carvajar con Ministro Carvajal</td>
-                    <td>1 perro, 1 mes  </td>
-                    <td>Laura Martínez</td>
-                    <td>2</td>
-                    <td><button class="btn-detalles" data-id="5">Ver Detalles</button></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles de Adopción</title>
+    
+    <link rel="stylesheet" href="tu-archivo.css">
+</head>
+<body>
+
+    <div class="container">
+
+        <a href="#" class="btn btn-inicio">Pantalla de inicio</a>
+
+        <h1>Lista de Adopcion</h1>
+        <h2>Detalles de la Adopción</h2>
+
+        <div class="detalles-adopcion">
+            
+            <div class="detalle-item">
+                <span class="label">Region:</span>
+                <span class="valor">Metropolitana</span>
+            </div>
+
+            <div class="detalle-item">
+                <span class="label">Comuna:</span>
+                <span class="valor">Santiago</span>
+            </div>
+
+            <div class="detalle-item">
+                <span class="label">Sector:</span>
+                <span class="valor">Beauchef 850, terraza</span>
+            </div>
+
+            <div class="detalle-item">
+                <span class="label">Nombre de contacto:</span>
+                <span class="valor">María González</span>
+            </div>
+
+            <div class="detalle-item">
+                <span class="label">Email de contacto:</span>
+                <span class="valor">maria.gonzalez@gmail.com</span>
+            </div>
+
+            <div class="detalle-item">
+                <span class="label">Teléfono de contacto:</span>
+                <span class="valor">+56 9 1234 5678</span>
+            </div>
+
+            <div class="detalle-item">
+                <span class="label">Tipo:</span>
+                <span class="valor">gato</span>
+            </div>
+
+            <div class="detalle-item">
+                <span class="label">Cantidad:</span>
+                <span class="valor">2</span>
+            </div>
+
+            <div class="detalle-item">
+                <span class="label">Edad:</span>
+                <span class="valor">2 meses</span>
+            </div>
+
+            <div class="detalle-item">
+                <span class="label">Fecha de publicación:</span>
+                <span class="valor">2025-08-30 12:00</span>
+            </div>
+
+            <div class="detalle-item">
+                <span class="label">Fecha de entrega:</span>
+                <span class="valor">2025-09-05 15:00</span>
+            </div>
+
+            <div class="detalle-item descripcion">
+                <span class="label">Descripción:</span>
+                <p>
+                    Hermoso gatito rescatado de la calle. Es juguetón, cariñoso y está buscando un hogar permanente donde lo cuiden y lo amen.
+                </p>
+            </div>
+
+            <div class="detalle-item">
+                <span class="label">Fotos:</span>
+            </div>
+
+        </div> <div class="fotos-container">
+            <img src="gato.jpg" alt="Foto de gatito 1">
+            <img src="gato.jpg" alt="Foto de gatito 2">
+        </div>
+
+        <a href="#" class="btn btn-volver">Volver a la lista</a>
+
+    </div> </body>
+</html>

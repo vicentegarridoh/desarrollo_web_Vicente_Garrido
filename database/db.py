@@ -1,4 +1,3 @@
-
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, DateTime, Text, Enum,  BigInteger
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship
 from sqlalchemy.sql import func
@@ -78,6 +77,15 @@ class ContactarPor(Base):
     aviso_id = Column(Integer, ForeignKey('aviso_adopcion.id'), nullable=False)
     #relaciones
     aviso = relationship("AvisoAdopcion", back_populates="contactos")
+class Comentario(Base):
+    __tablename__ = 'comentario'
+    #entidades
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    nombre = Column(String(80), nullable=False)
+    texto = Column(String(300), nullable=False)
+    fecha = Column(DateTime, nullable=False, default=datetime.now)
+    aviso_id = Column(Integer, ForeignKey('aviso_adopcion.id'), nullable=False)
+    
 
 #creacion de metodos
 def get_aviso(page_size):
@@ -104,7 +112,7 @@ def get_aviso_paginado(multiplicador, page_size=5):
     session = SessionLocal()
     offset = (multiplicador - 1) * page_size
     aviso = session.query(AvisoAdopcion)\
-        .order_by(AvisoAdopcion.id)\
+        .order_by(AvisoAdopcion.id.desc())\
         .offset(offset)\
         .limit(page_size)\
         .all()
