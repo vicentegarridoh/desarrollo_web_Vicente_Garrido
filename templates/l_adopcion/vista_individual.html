@@ -97,9 +97,26 @@
 
         <br>
         <br>
+
+
+        {% if data[0].comentarios %}
+        <h2>Sección de comentarios</h2>
+        <div class="comentarios_sec">
+            {% for i in data[0].comentarios %}
+            <div class="comentarios_slot">
+                <p class="comentarios_usuario">{{ i[0] }}</p>
+                <p class="comentarios_texto">{{ i[1] }}</p>
+            </div>
+            {% endfor %}
+
+        </div>
+        {% endif %} 
+
+
+
         <!--momento de agregar el formulario para subir datos-->
         <h2>Agregar Comentario</h2>
-        <form class="formulario" id="comentario-form" action="/" method="POST" enctype="multipart/form-data">
+        <form class="formulario" id="comentario-form"  method="POST" enctype="multipart/form-data">
             <div class="agregar_comentario">
                 <div id="usuarioc_input" class="grupo-input">
                     <label for="usuarioc">Usuario</label><br> 
@@ -107,7 +124,10 @@
                 </div>
                 <div id="comentario0_input" class="grupo-input">
                     <label for="comentario0">Comentario: </label><br>
-                    <textarea rows="4" cols="50" name="comentario0" id="comentario0" required minlength="5" ></textarea><br>
+                    <textarea rows="4" cols="50" name="comentario0" id="comentario0" required minlength="5"     ></textarea><br>
+                </div>
+                <div id="val-box2" hidden>
+                    <h5 id="val-msg2">.</h5>
                 </div>
                 <div>
                     <button id="submit-btn-com" type="button">Agregar comentario</button>

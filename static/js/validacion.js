@@ -157,6 +157,7 @@ const validateForm = () => {
   
     // finalmente mostrar la validación
   let validationBox = document.getElementById("val-box");
+  
   let validationMessageElem = document.getElementById("val-msg");
   let validationListElem = document.getElementById("val-list");
 

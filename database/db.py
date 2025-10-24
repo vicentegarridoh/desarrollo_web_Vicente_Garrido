@@ -85,6 +85,8 @@ class Comentario(Base):
     texto = Column(String(300), nullable=False)
     fecha = Column(DateTime, nullable=False, default=datetime.now)
     aviso_id = Column(Integer, ForeignKey('aviso_adopcion.id'), nullable=False)
+
+
     
 
 #creacion de metodos
@@ -180,3 +182,23 @@ def create_aviso_m(comuna_id,sector,nombre,email,celular,tipo,cantidad,edad,unid
     session.commit()
     session.close()
 
+def create_comentario(usuario,comentario,aviso_id0):
+    session = SessionLocal()
+    text = Comentario(nombre=usuario,texto = comentario,fecha = datetime.now(),aviso_id = aviso_id0)
+    session.add(text)
+    session.commit()
+    session.close()
+
+
+def get_aviso_especifico(id):
+    session = SessionLocal()
+    aviso = session.query(AvisoAdopcion).filter_by(id=id).first()
+    session.close()
+    return aviso
+
+
+def get_comentarios(aviso_id):
+    session = SessionLocal()
+    comentarios = session.query(Comentario).filter_by(aviso_id=aviso_id)
+    session.close()
+    return comentarios

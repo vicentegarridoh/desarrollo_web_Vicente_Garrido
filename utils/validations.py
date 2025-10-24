@@ -76,7 +76,14 @@ def validate_un_edad(unidad):
     if unidad == "meses" or unidad == "mes" or unidad == "años" or unidad == "año":
         return True
     return False
-        
+
+
+
+def validate_comentario(usuario,comentario):
+    validate_usuario = len(usuario) <=80 and len(usuario) >=3
+    validate_com = len(comentario) >=5
+    return validate_usuario and validate_com
+
 
 def validate_aviso(comuna,sector,name,numero,tipo,cantidad,edad,unidad,fecha,fotos,contacto,email):
     #comuna,sector,name,email,numero,tipo,cantidad,edad,un_edad,fecha,fotos,contacto

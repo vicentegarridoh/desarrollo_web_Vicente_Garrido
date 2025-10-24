@@ -30,7 +30,6 @@ const validar_comentario = (comentario) => {
 
 
 const validarcomentario = () => {
-    console.log("balidadon")
     let myForm1 = document.forms["comentario-form"];
     let usuario = myForm1["usuarioc"].value;
     let comentario = myForm1["comentario0"].value;
@@ -52,9 +51,15 @@ const validarcomentario = () => {
     
     if (!isValid) {
         console.log("no valido")
+        let validarmensaje = document.getElementById("val-msg2");
+        let validarBox = document.getElementById("val-box2");
+        validarmensaje.innerText = "Los datos ingresados no son validos";
+        validarBox.hidden = false;
+
+
     } else {
-        console.log("fasf")
-        myForm.submit();
+        console.log("valido")
+        myForm1.submit();
     }   
 }
 

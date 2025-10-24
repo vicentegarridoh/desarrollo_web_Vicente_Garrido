@@ -100,7 +100,7 @@ fetch("http://127.0.0.1:5000/get-stats-data")
 fetch("http://127.0.0.1:5000/get-stats-data2")
   .then((response) => response.json())
   .then((data) => {
-
+ 
     // Get the chart by ID
     const chart = Highcharts.charts.find(
       (chart) => chart && chart.renderTo.id === "container_2"

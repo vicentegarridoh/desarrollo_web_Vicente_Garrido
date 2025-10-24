@@ -123,39 +123,58 @@ def aviso():
 
 @app.route("/vista/<int:arg>",  methods=["GET", "POST"])
 def vista(arg):
+    if request.method == "POST":
+        print("metodo post")
+        usuario = request.form.get("usuarioc")
+        comentario = request.form.get("comentario0")
+        if validate_comentario == False:
+            print("error")
+        else:
+            #subamos a la base de datos
+            db.create_comentario(usuario,comentario,arg)
+
+    
     data = {}
-    for aviso in db.get_aviso(500):
-        if aviso.id == arg:
-            foto = db.get_1foto_by_id(aviso.id)
-            foto = foto.ruta_archivo
-            region = "Metropolitana"
-            comuna = db.get_comuna_by_id(aviso.comuna_id)
-            unidad = aviso.unidad_medida
-            if unidad == "m" and aviso.edad > 1:
-                unidad = "meses"
-            elif unidad == "m":
-                unidad = "mes"
-            elif unidad == "a" and aviso.edad > 1:
-                unidad = "años"
-            elif unidad == "a" :
-                unidad = "año"
-            else:
-                unidad = "error"
-            data={"Fecha_de_publicacion":str(aviso.fecha_ingreso),
-                    "Fecha_de_entrega":str(aviso.fecha_entrega),
-                    "Comuna":str(comuna.nombre),
-                    "Region":str(region),
-                    "Sector":str(aviso.sector),
-                    "Cantidad":str(aviso.cantidad),
-                    "tipo":str(aviso.tipo),
-                    "edad":str(aviso.edad) +" " +unidad,
-                    "nombre":str(aviso.nombre),
-                    "descripcion":str(aviso.descripcion),
-                    "correo":str(aviso.email),
-                    "numero":str(aviso.celular),
-                    "Foto":foto,
-                    "total_de_fotos":2,
-                    "id":aviso.id},
+    
+    aviso = db.get_aviso_especifico(arg)
+
+    comentarios = db.get_comentarios(aviso.id)
+    comentarios_display = []
+    for com in comentarios:
+        comentarios_display.append([com.nombre,com.texto])
+        
+    print(comentarios_display)
+    foto = db.get_1foto_by_id(aviso.id)
+    foto = foto.ruta_archivo
+    region = "Metropolitana"
+    comuna = db.get_comuna_by_id(aviso.comuna_id)
+    unidad = aviso.unidad_medida
+    if unidad == "m" and aviso.edad > 1:
+        unidad = "meses"
+    elif unidad == "m":
+        unidad = "mes"
+    elif unidad == "a" and aviso.edad > 1:
+        unidad = "años"
+    elif unidad == "a" :
+        unidad = "año"
+    else:
+        unidad = "error"
+    data={"Fecha_de_publicacion":str(aviso.fecha_ingreso),
+            "Fecha_de_entrega":str(aviso.fecha_entrega),
+            "Comuna":str(comuna.nombre),
+            "Region":str(region),
+            "Sector":str(aviso.sector),
+            "Cantidad":str(aviso.cantidad),
+            "tipo":str(aviso.tipo),
+            "edad":str(aviso.edad) +" " +unidad,
+            "nombre":str(aviso.nombre),
+            "descripcion":str(aviso.descripcion),
+            "correo":str(aviso.email),
+            "numero":str(aviso.celular),
+            "comentarios":comentarios_display,
+            "Foto":foto,
+            "total_de_fotos":2,
+            "id":aviso.id},
     return render_template("l_adopcion/vista_individual.html",data = data)  
 
 
