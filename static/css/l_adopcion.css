@@ -109,12 +109,25 @@ tr:hover {
     background-color: rgba(0, 0, 0, 0.9);
     text-align: center;
 }
-.modal-content {
-    width: 800px;
-    height: 600px;
-    margin: 0 auto;
-    display: block;
+
+.gallery-thumbnail {
+    cursor: pointer;
+    transition: 0.3s;
 }
+
+.gallery-thumbnail:hover {
+    opacity: 0.7;
+}
+
+
+.modal-content {
+    margin: 0 auto;         
+    display: block;
+    width: 800px;
+    height: 600px;     
+    object-fit: contain; 
+}
+
 .close-button {
     position: absolute;
     top: 15px;

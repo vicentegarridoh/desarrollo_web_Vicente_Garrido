@@ -52,5 +52,5 @@ button {
     border: 1px solid #c8e6c9;
 }
 .highcharts-figure {
-  border: 1px solid #000000; /* 1px de grosor, sólido, color negro */
+  border: 1px solid #000000; 
 }

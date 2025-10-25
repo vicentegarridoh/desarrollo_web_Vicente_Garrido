@@ -312,9 +312,7 @@ button:hover {
         max-width: 100%;
     }
 }
-input:invalid, select:invalid, textarea:invalid {
-    border-color: #f44336;
-}
+
 .validation-message {
     color: #f44336;
     font-size: 0.85em;

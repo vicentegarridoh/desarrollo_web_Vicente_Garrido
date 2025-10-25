@@ -18,6 +18,8 @@ app.secret_key = "s3cr3t_k3y"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
 
+
+
 @app.route("/")
 def index():
     data = {}
@@ -121,33 +123,33 @@ def aviso():
 
 
 
-@app.route("/vista/<int:arg>",  methods=["GET", "POST"])
+
+
+
+
+
+@app.route("/vista/<int:arg>",  methods=["GET"])
 def vista(arg):
-    if request.method == "POST":
-        print("metodo post")
-        usuario = request.form.get("usuarioc")
-        comentario = request.form.get("comentario0")
-        if validate_comentario == False:
-            print("error")
-        else:
-            #subamos a la base de datos
-            db.create_comentario(usuario,comentario,arg)
-
-    
     data = {}
-    
     aviso = db.get_aviso_especifico(arg)
-
     comentarios = db.get_comentarios(aviso.id)
     comentarios_display = []
     for com in comentarios:
         comentarios_display.append([com.nombre,com.texto])
-        
-    print(comentarios_display)
-    foto = db.get_1foto_by_id(aviso.id)
-    foto = foto.ruta_archivo
-    region = "Metropolitana"
+    
+    fotosmulti = db.get_foto_by_id(aviso.id)
+    fotos_display = []
+    for a in fotosmulti:
+        fotos_display.append(a.ruta_archivo)
+    
+    
+
+
     comuna = db.get_comuna_by_id(aviso.comuna_id)
+    region = db.get_region_by_id(int(comuna.region_id))
+
+
+
     unidad = aviso.unidad_medida
     if unidad == "m" and aviso.edad > 1:
         unidad = "meses"
@@ -162,7 +164,7 @@ def vista(arg):
     data={"Fecha_de_publicacion":str(aviso.fecha_ingreso),
             "Fecha_de_entrega":str(aviso.fecha_entrega),
             "Comuna":str(comuna.nombre),
-            "Region":str(region),
+            "Region":str(region.nombre),
             "Sector":str(aviso.sector),
             "Cantidad":str(aviso.cantidad),
             "tipo":str(aviso.tipo),
@@ -172,10 +174,46 @@ def vista(arg):
             "correo":str(aviso.email),
             "numero":str(aviso.celular),
             "comentarios":comentarios_display,
-            "Foto":foto,
-            "total_de_fotos":2,
+            "Foto":fotos_display,
+            "total_de_fotos":len(fotos_display),
             "id":aviso.id},
     return render_template("l_adopcion/vista_individual.html",data = data)  
+
+
+
+
+
+
+
+
+
+@app.route("/api/agregar_comentario/<int:aviso_id>", methods=["POST"])
+@cross_origin(origin="127.0.0.1", supports_credentials=True)
+def api_agregar_comentario(aviso_id):
+    data = request.json
+    usuario = data.get("usuario")
+    comentario = data.get("comentario")
+
+    if validate_comentario(usuario,comentario) == False:
+        return "Datos inválidos" 
+        
+    db.create_comentario(usuario, comentario, aviso_id)
+    return jsonify({
+        "success": True, 
+        "comentario": {
+            "usuario": usuario, 
+            "texto": comentario
+        }
+    })
+
+
+
+
+
+
+
+
+
 
 
 @app.route("/l_adopcion/<int:arg>/<int:arg2>",  methods=["GET", "POST"])
@@ -198,17 +236,49 @@ def lista(arg,arg2):
                 unidad = "año"
             else:
                 unidad = "error"
+            fotosmulti = db.get_foto_by_id(aviso.id)
+            fotos_num = 0
+            for a in fotosmulti:
+                fotos_num += 1
             data[aviso.id] ={"Fecha_de_publicacion":str(aviso.fecha_ingreso),
                     "Fecha_de_entrega":str(aviso.fecha_entrega),
                     "Comuna":str(comuna.nombre),
-                    "Sector":str(aviso.sector),
+                    "Secto  r":str(aviso.sector),
                     "Cantidad_Tipo_Edad":str(aviso.cantidad) + " " + str(aviso.tipo) + ", " + str(aviso.edad) +" " +unidad,
                     "nombre":str(aviso.nombre),
-                    "total_de_fotos":2,
+                    "total_de_fotos":fotos_num,
                     "id":aviso.id},
             i += 1
-            foto = db.get_1foto_by_id(aviso.id)
     return render_template("l_adopcion/l_adopcion.html",data=data) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @app.route("/estadisticas",  methods=["GET", "POST"])
 def estadisticas():
@@ -218,36 +288,20 @@ def estadisticas():
 @app.route("/get-stats-data", methods=["GET"])
 @cross_origin(origin="127.0.0.1", supports_credentials=True)
 def get_stats_data():
-    """
-    Genera datos estadísticos contando las publicaciones (avisos) por día,
-    basado en los datos reales de 'fecha_ingreso' de la base de datos.
-    """
-    
-    # 1. Usamos collections.Counter para agrupar y contar eficientemente.
-    #    Asumimos que 'aviso.fecha_ingreso' es un objeto datetime.
-    
-        # Usamos .date() para truncar la hora/minutos/segundos 
-        # y agrupar solo por día.
-        # Ajusta page_size según cuántos datos históricos quieras mostrar.
-        
     date_list = [
         aviso.fecha_ingreso.date() 
-        for aviso in db.get_aviso_ultimo(page_size=500) # Usamos 500 como ejemplo
-        if aviso.fecha_ingreso # Nos aseguramos que la fecha no sea None
+        for aviso in db.get_aviso_ultimo(page_size=500) 
+        if aviso.fecha_ingreso 
     ]
-    
-    # 2. Contamos las ocurrencias de cada fecha
-    # Esto crea un dict: {datetime.date(2025, 10, 8): 5, ...}
     date_counts = Counter(date_list)
     processed_data = [
         {
-            "date": date_obj.strftime("%Y-%m-%d"), # Convertimos el objeto date a string
+            "date": date_obj.strftime("%Y-%m-%d"), 
             "count": count
         } 
         for date_obj, count in date_counts.items()
     ]
 
-    # 4. Ordenamos por fecha (clave)
     processed_data.sort(key=lambda x: x["date"])
 
     return jsonify(processed_data)
@@ -255,39 +309,19 @@ def get_stats_data():
 @app.route("/get-stats-data2", methods=["GET"])
 @cross_origin(origin="127.0.0.1", supports_credentials=True)
 def get_stats_data2():
-    """
-    Genera datos estadísticos para un gráfico de torta, contando
-    la cantidad total de 'perro' y 'gato' en los avisos.
-    """
-    
-    # 1. Obtenemos la lista de tipos de mascota.
-    # Asumo que 'db.get_aviso_ultimo()' es el método correcto
-    # para obtener los datos, basado en tu plantilla original.
-    # Ajusta page_size si es necesario.
     type_list = [
         aviso.tipo
         for aviso in db.get_aviso_ultimo(page_size=500)
-        if aviso.tipo # Nos aseguramos que el tipo no sea None
+        if aviso.tipo
     ]
-    
-    # 2. Contamos las ocurrencias de cada tipo
-    # Esto crea un dict: {'perro': 70, 'gato': 30}
     type_counts = Counter(type_list)
-    
-    # 3. Convertimos al formato que Highcharts espera para un gráfico de torta:
-    # [ { "name": "Perros", "y": 70 }, { "name": "Gatos", "y": 30 } ]
-    
     processed_data = [
         {
-            # Convertimos 'perro' -> 'Perro' para mostrarlo
             "name": tipo.capitalize(), 
             "y": count
         }
         for tipo, count in type_counts.items()
     ]
-    
-    # 4. Ordenamos por cantidad (opcional, pero hace que el gráfico
-    # se vea más ordenado, de mayor a menor)
     processed_data.sort(key=lambda x: x["y"], reverse=True)
     print(processed_data)
     return jsonify(processed_data)
@@ -296,15 +330,6 @@ def get_stats_data2():
 @app.route("/get-stats-data3", methods=["GET"])
 @cross_origin(origin="127.0.0.1", supports_credentials=True)
 def get_stats_data3():
-    """
-    Genera datos estadísticos para un gráfico de torta, contando
-    la cantidad total de 'perro' y 'gato' en los avisos.
-    """
-    
-    # 1. Obtenemos la lista de tipos de mascota.
-    # Asumo que 'db.get_aviso_ultimo()' es el método correcto
-    # para obtener los datos, basado en tu plantilla original.
-    # Ajusta page_size si es necesario.
     dict = {}
     i = 1
     while i<13:
@@ -360,8 +385,6 @@ def get_stats_data4():
                 "total_de_fotos":2,
                 "id":aviso.id},
         i += 1
-        foto = db.get_1foto_by_id(aviso.id)
-        print("extrasido")
     return jsonify(data)
 
 
