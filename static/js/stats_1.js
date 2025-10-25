@@ -55,17 +55,15 @@ fetch("http://127.0.0.1:5000/get-stats-data")
         .split("-")
         .map((part) => parseInt(part, 10));
       return [
-        Date.UTC(year, month - 1, day), // javascript month indices start from 0 !
+        Date.UTC(year, month - 1, day),
         item.count,
       ];
     });
 
-    // Get the chart by ID
     const chart = Highcharts.charts.find(
       (chart) => chart && chart.renderTo.id === "container"
     );
 
-    // Update the chart with new data
     chart.update({
       series: [
         {
@@ -83,8 +81,8 @@ fetch("http://127.0.0.1:5000/get-stats-data")
         type: 'pie'
     },
     colors: [
-        '#0a8fd6ff', // Un azul profesional (para el primer dato, ej. "Perro")
-        '#06998aff', // Un verde azulado/teal (para el segundo dato, ej. "Gato")
+        '#0a8fd6ff',
+        '#06998aff', 
     ],
     title: {
         text: 'Total de Avisos de Adopción por Tipo de Mascota'
@@ -100,13 +98,9 @@ fetch("http://127.0.0.1:5000/get-stats-data")
 fetch("http://127.0.0.1:5000/get-stats-data2")
   .then((response) => response.json())
   .then((data) => {
- 
-    // Get the chart by ID
     const chart = Highcharts.charts.find(
       (chart) => chart && chart.renderTo.id === "container_2"
     );
-
-    // Update the chart with new data
     chart.update({
       series: [
         {
@@ -149,13 +143,10 @@ fetch("http://127.0.0.1:5000/get-stats-data2")
 fetch("http://127.0.0.1:5000/get-stats-data3")
   .then((response) => response.json())
   .then((data) => {
-
-    // Get the chart by ID
     const chart = Highcharts.charts.find(
       (chart) => chart && chart.renderTo.id === "container_3"
     );
 
-    // Update the chart with new data
     chart.update({
       series: [{
         name: 'Gatos',

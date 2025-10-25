@@ -49,19 +49,75 @@ const validarcomentario = () => {
         setInvalidInput("comentario");
     }
     
+    let validarmensaje = document.getElementById("val-msg2");
+    let validarBox = document.getElementById("val-box2");
+
     if (!isValid) {
-        console.log("no valido")
-        let validarmensaje = document.getElementById("val-msg2");
-        let validarBox = document.getElementById("val-box2");
+        console.log("no valido");
         validarmensaje.innerText = "Los datos ingresados no son validos";
         validarBox.hidden = false;
-
-
     } else {
-        console.log("valido")
-        myForm1.submit();
+        validarBox.hidden = true; 
+
+        const avisoId = myForm1.dataset.avisoId;
+        const url = `/api/agregar_comentario/${avisoId}`;
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                usuario: usuario,
+                comentario: comentario
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                myForm1.reset(); 
+                const comentario1 = document.createElement('div');
+                comentario1.className = 'comentarios_slot';
+                comentario1.innerHTML = `
+                    <p class="comentarios_usuario">${data.comentario.usuario}</p>
+                    <p class="comentarios_texto">${data.comentario.texto}</p>
+                `;
+                document.getElementById('comentarios-lista').appendChild(comentario1);
+            } 
+        })
+        .catch(error => {
+            console.error(
+                "There has been a problem with your fetch operation:",
+                error
+            );
+            validarBox.hidden = false;
+        });
     }   
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    var modal = document.getElementById("myModal");
+    var modalImg = document.getElementById("imgModal");
+    var span = document.getElementsByClassName("close-button")[0];
+    var images = document.getElementsByClassName("gallery-thumbnail");
+    for (var i = 0; i < images.length; i++) {
+        images[i].onclick = function() {
+            modal.style.display = "block"; 
+            modalImg.src = this.src;     
+        }
+    }
+    if (span) {
+        span.onclick = function() {
+            modal.style.display = "none"; 
+        }
+    }
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+});
+
 
 //Botones de apartados
 let submitBtnindex = document.getElementById("btn-index")

@@ -139,6 +139,13 @@ def get_1foto_by_id(id):
     session.close()
     return foto
 
+def get_foto_by_id(id):
+    session = SessionLocal()
+    foto = session.query(Foto).filter_by(aviso_id=id)
+    session.close()
+    return foto
+
+
 def create_aviso_m(comuna_id,sector,nombre,email,celular,tipo,cantidad,edad,unidad_medida,fecha_entrega,descripcion,contactos,fotos):
     session = SessionLocal()
     aviso = AvisoAdopcion(
@@ -202,3 +209,11 @@ def get_comentarios(aviso_id):
     comentarios = session.query(Comentario).filter_by(aviso_id=aviso_id)
     session.close()
     return comentarios
+
+
+def get_region_by_id(region_id):
+    session = SessionLocal()
+    name = session.query(Region).filter_by(id=region_id).first()
+    session.close()
+    return name
+

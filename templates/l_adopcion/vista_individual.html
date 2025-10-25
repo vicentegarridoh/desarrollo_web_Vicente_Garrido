@@ -83,40 +83,52 @@
             </p>
         </div>
 
-        <div class="detalle-seccion">
-            <span class="label">Fotos:</span>
 
-            {% if data[0].Foto %}
-                <img src="{{ url_for('static', filename=data[0].Foto) }}" 
-                        alt="Foto" 
-                        style="width: 320px; max-height: 240px;">
-            {% else %}
-            Sin foto
-            {% endif %}
-        </div>
+            <div class="detalles-box">
+                
+                <div class="detalle-seccion">
+                    <span class="label">Fotos:</span>
+
+                    {% if data[0].Foto %}
+                        {% for i in data[0].Foto %}
+                        <img src="{{ url_for('static', filename=i) }}" 
+                            alt="Foto" 
+                            style="width: 320px; height: 240px;"
+                            class="gallery-thumbnail"> {% endfor %}
+                        
+                    {% else %}
+                    Sin foto
+                    {% endif %}
+                </div>
+
+                </div> 
+
+            <div id="myModal" class="modal">
+            <span class="close-button">&times;</span>
+            
+            <img class="modal-content" id="imgModal" alt="">
+            </div>
+
 
         <br>
         <br>
 
-
-        {% if data[0].comentarios %}
         <h2>Sección de comentarios</h2>
-        <div class="comentarios_sec">
+        <div class="comentarios_sec" id="comentarios-lista">
             {% for i in data[0].comentarios %}
             <div class="comentarios_slot">
-                <p class="comentarios_usuario">{{ i[0] }}</p>
-                <p class="comentarios_texto">{{ i[1] }}</p>
+                {% if data[0].comentarios %}
+                    <p class="comentarios_usuario">{{ i[0] }}</p>
+                    <p class="comentarios_texto">{{ i[1] }}</p>
+                {% endif %}
             </div>
             {% endfor %}
-
         </div>
-        {% endif %} 
-
 
 
         <!--momento de agregar el formulario para subir datos-->
         <h2>Agregar Comentario</h2>
-        <form class="formulario" id="comentario-form"  method="POST" enctype="multipart/form-data">
+        <form class="formulario" id="comentario-form" data-aviso-id="{{data[0]['id']}}" method="POST" enctype="multipart/form-data">
             <div class="agregar_comentario">
                 <div id="usuarioc_input" class="grupo-input">
                     <label for="usuarioc">Usuario</label><br> 
