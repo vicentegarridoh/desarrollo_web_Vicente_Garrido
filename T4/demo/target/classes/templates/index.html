@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Avisos de Adopción</title>
+    </head>
+<body>
+
+    <h1>Avisos de Adopción</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Fecha publicación</th>
+                <th>Sector</th>
+                <th>Descripción</th>
+                <th>Comuna</th>
+                <th>Nota</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="aviso : ${avisos}">
+                <td th:text="${aviso.id}">1</td>
+                <td th:text="${#temporals.format(aviso.fechaIngreso, 'yyyy-MM-dd')}"></td>
+                <td th:text="${aviso.sector}"></td>
+                
+                <td th:text="${aviso.cantidad + ' ' + aviso.tipo.name() + ' ' + aviso.edad + ' ' + (aviso.unidadMedida.name() == 'a' ? 'años' : 'meses')}">
+                    
+                </td>
+                
+                <td th:text="${aviso.comuna}"></td>
+                
+                <td th:id="'nota-' + ${aviso.id}" th:text="${aviso.getPromedioNotas()}"></td>
+                
+                <td>
+                    <a href="#" class="btn-nota" th:data-id="${aviso.id}" th:data-nota="1">[1]</a>
+                    <a href="#" class="btn-nota" th:data-id="${aviso.id}" th:data-nota="2">[2]</a>
+                    <a href="#" class="btn-nota" th:data-id="${aviso.id}" th:data-nota="3">[3]</a>
+                    <a href="#" class="btn-nota" th:data-id="${aviso.id}" th:data-nota="4">[4]</a>
+                    <a href="#" class="btn-nota" th:data-id="${aviso.id}" th:data-nota="5">[5]</a>
+                    <a href="#" class="btn-nota" th:data-id="${aviso.id}" th:data-nota="6">[6]</a>
+                    <a href="#" class="btn-nota" th:data-id="${aviso.id}" th:data-nota="7">[7]</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>
